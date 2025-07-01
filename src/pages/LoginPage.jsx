@@ -57,7 +57,6 @@ const LoginPage = () => {
           setAuthMessage('Please check your email and click the confirmation link to complete registration!')
         } else {
           setAuthMessage('Registration successful!')
-          // Navigate to dashboard after successful registration
           navigate('/dashboard')
         }
       } else {
@@ -68,7 +67,6 @@ const LoginPage = () => {
         
         if (error) throw error
         setAuthMessage('Login successful!')
-        // Navigate to dashboard after successful login
         navigate('/dashboard')
       }
     } catch (error) {
@@ -93,204 +91,157 @@ const LoginPage = () => {
   }
 
   return (
-    <div style={{ 
+    <div className="flex items-center justify-center" style={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px'
+      background: 'linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%)',
+      padding: 'var(--space-4)'
     }}>
-      <div style={{ 
-        background: 'white',
-        borderRadius: '12px',
-        padding: '40px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-        width: '100%',
-        maxWidth: '400px'
+      <div className="card fade-in" style={{ 
+        maxWidth: '450px',
+        width: '100%'
       }}>
-        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ 
-            margin: '0 0 10px 0',
-            color: '#333',
-            fontSize: '28px',
-            fontWeight: 'bold'
-          }}>
-            Welcome to ExpenseTracker
-          </h1>
-          <p style={{ 
-            margin: 0,
-            color: '#666',
-            fontSize: '16px'
-          }}>
-            {isSignUp ? 'Create your account' : 'Sign in to your account'}
-          </p>
-        </div>
-
-        {authMessage && (
-          <div style={{
-            background: '#d4edda',
-            color: '#155724',
-            padding: '12px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            border: '1px solid #c3e6cb'
-          }}>
-            {authMessage}
-          </div>
-        )}
-
-        {authError && (
-          <div style={{
-            background: '#f8d7da',
-            color: '#721c24',
-            padding: '12px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            border: '1px solid #f5c6cb'
-          }}>
-            {authError}
-          </div>
-        )}
-
-        <form onSubmit={handleAuth}>
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ 
-              display: 'block',
-              marginBottom: '8px',
-              color: '#333',
-              fontWeight: '500'
+        <div className="card-body" style={{ padding: 'var(--space-10)' }}>
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
+            <div style={{ 
+              fontSize: '3rem', 
+              marginBottom: 'var(--space-4)',
+              background: 'linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}>
-              Email Address
-            </label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{ 
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #e1e5e9',
-                borderRadius: '8px',
-                fontSize: '16px',
-                boxSizing: 'border-box',
-                transition: 'border-color 0.3s'
-              }}
-              onFocus={(e) => e.target.style.borderColor = '#667eea'}
-              onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
-            />
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ 
-              display: 'block',
-              marginBottom: '8px',
-              color: '#333',
-              fontWeight: '500'
+              $
+            </div>
+            <h1 className="text-3xl font-bold" style={{ 
+              color: 'var(--gray-900)',
+              marginBottom: 'var(--space-2)'
             }}>
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{ 
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #e1e5e9',
-                borderRadius: '8px',
-                fontSize: '16px',
-                boxSizing: 'border-box',
-                transition: 'border-color 0.3s'
-              }}
-              onFocus={(e) => e.target.style.borderColor = '#667eea'}
-              onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
-            />
+              ExpenseTracker
+            </h1>
+            <p className="text-lg" style={{ color: 'var(--gray-600)' }}>
+              {isSignUp ? 'Create your account' : 'Welcome back!'}
+            </p>
           </div>
 
-          {isSignUp && (
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ 
-                display: 'block',
-                marginBottom: '8px',
-                color: '#333',
-                fontWeight: '500'
-              }}>
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                style={{ 
-                  width: '100%',
-                  padding: '12px',
-                  border: '2px solid #e1e5e9',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  boxSizing: 'border-box',
-                  transition: 'border-color 0.3s'
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#667eea'}
-                onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
-              />
+          {/* Messages */}
+          {authMessage && (
+            <div className="alert alert-success fade-in" style={{ marginBottom: 'var(--space-6)' }}>
+              <span style={{ marginRight: 'var(--space-2)' }}>✓</span>
+              {authMessage}
             </div>
           )}
 
-          <button 
-            type="submit" 
-            disabled={authLoading}
-            style={{ 
-              width: '100%',
-              padding: '14px',
-              background: authLoading ? '#ccc' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: authLoading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.3s',
-              marginBottom: '20px'
-            }}
-            onMouseOver={(e) => {
-              if (!authLoading) {
-                e.target.style.transform = 'translateY(-2px)'
-                e.target.style.boxShadow = '0 10px 20px rgba(0,0,0,0.2)'
+          {authError && (
+            <div className="alert alert-error fade-in" style={{ marginBottom: 'var(--space-6)' }}>
+              <span style={{ marginRight: 'var(--space-2)' }}>×</span>
+              {authError}
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleAuth}>
+            <div className="form-group">
+              <label className="form-label">
+                Email Address
+              </label>
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="form-input"
+              />
+            </div>
+
+            {isSignUp && (
+              <div className="form-group">
+                <label className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="form-input"
+                />
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              disabled={authLoading}
+              className="btn btn-primary btn-lg"
+              style={{ 
+                width: '100%',
+                marginBottom: 'var(--space-6)',
+                background: authLoading ? 'var(--gray-400)' : 'linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%)'
+              }}
+            >
+              {authLoading ? (
+                <>
+                  <div className="loading-spinner" style={{ width: '20px', height: '20px' }}></div>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <span style={{ marginRight: 'var(--space-2)' }}>
+                    {isSignUp ? '→' : '→'}
+                  </span>
+                  {isSignUp ? 'Create Account' : 'Sign In'}
+                </>
+              )}
+            </button>
+          </form>
+          
+          {/* Toggle Auth Mode */}
+          <div style={{ textAlign: 'center' }}>
+            <p className="text-sm" style={{ color: 'var(--gray-600)', marginBottom: 'var(--space-3)' }}>
+              {isSignUp 
+                ? 'Already have an account?' 
+                : "Don't have an account?"
               }
-            }}
-            onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = 'none'
-            }}
-          >
-            {authLoading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
-          </button>
-        </form>
-        
-        <div style={{ textAlign: 'center' }}>
-          <button 
-            onClick={toggleAuthMode}
-            style={{ 
-              background: 'none',
-              border: 'none',
-              color: '#667eea',
-              cursor: 'pointer',
-              fontSize: '14px',
-              textDecoration: 'underline'
-            }}
-          >
-            {isSignUp 
-              ? 'Already have an account? Sign In' 
-              : 'Need an account? Create Account'
-            }
-          </button>
+            </p>
+            <button 
+              onClick={toggleAuthMode}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.875rem' }}
+            >
+              {isSignUp 
+                ? 'Sign In Instead' 
+                : 'Create Account'
+              }
+            </button>
+          </div>
+
+          {/* Footer */}
+          <div style={{ 
+            textAlign: 'center', 
+            marginTop: 'var(--space-8)',
+            paddingTop: 'var(--space-6)',
+            borderTop: '1px solid var(--gray-200)'
+          }}>
+            <p className="text-xs" style={{ color: 'var(--gray-500)' }}>
+              Secure expense tracking for teams and individuals
+            </p>
+          </div>
         </div>
       </div>
     </div>

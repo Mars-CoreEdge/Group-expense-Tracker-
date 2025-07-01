@@ -161,6 +161,55 @@ def add_expense_to_group(group_id):
         logger.error(f"Error adding expense to group {group_id}: {e}")
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
+@app.route("/api/groups/<int:group_id>", methods=["DELETE"])
+def delete_group(group_id):
+    """Delete a group and all its expenses."""
+    user, error, status_code = get_current_user()
+    if error:
+        return jsonify(error), status_code
+    
+    try:
+        # First, verify the user owns this group
+        groups = db_client.select("groups", filters={"id": group_id, "created_by": str(user["id"])})
+        
+        if not groups:
+            return jsonify({"error": "Group not found or access denied"}), 404
+        
+        # Delete all expenses for this group first
+        db_client.delete("expenses", filters={"group_id": group_id})
+        
+        # Delete the group
+        result = db_client.delete("groups", filters={"id": group_id, "created_by": str(user["id"])})
+        
+        return jsonify({"message": "Group deleted successfully"}), 200
+        
+    except Exception as e:
+        logger.error(f"Error deleting group {group_id}: {e}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+
+@app.route("/api/expenses/<int:expense_id>", methods=["DELETE"])
+def delete_expense(expense_id):
+    """Delete a specific expense."""
+    user, error, status_code = get_current_user()
+    if error:
+        return jsonify(error), status_code
+    
+    try:
+        # First, verify the user owns this expense
+        expenses = db_client.select("expenses", filters={"id": expense_id, "created_by": str(user["id"])})
+        
+        if not expenses:
+            return jsonify({"error": "Expense not found or access denied"}), 404
+        
+        # Delete the expense
+        result = db_client.delete("expenses", filters={"id": expense_id, "created_by": str(user["id"])})
+        
+        return jsonify({"message": "Expense deleted successfully"}), 200
+        
+    except Exception as e:
+        logger.error(f"Error deleting expense {expense_id}: {e}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+
 @app.route("/api/groups", methods=["GET"])
 def get_user_groups():
     """Get all groups for the authenticated user."""
@@ -170,6 +219,12 @@ def get_user_groups():
     
     try:
         groups = db_client.select("groups", filters={"created_by": str(user["id"])}, order="created_at.desc")
+        
+        # Calculate expense count and total amount for each group
+        for group in groups:
+            expenses = db_client.select("expenses", filters={"group_id": group["id"]})
+            group["expense_count"] = len(expenses)
+            group["total_amount"] = float(sum(Decimal(str(expense["amount"])) for expense in expenses))
         
         return jsonify({
             "groups": groups,

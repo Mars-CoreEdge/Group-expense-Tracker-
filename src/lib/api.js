@@ -62,15 +62,27 @@ class ApiService {
 
   // Expense API methods
   async getExpensesForGroup(groupId) {
-    return this.request(`/api/expenses/${groupId}`, {
+    return this.request(`/api/groups/${groupId}/expenses`, {
       method: 'GET'
     })
   }
 
   async addExpenseToGroup(groupId, expenseData) {
-    return this.request(`/api/expenses/${groupId}`, {
+    return this.request(`/api/groups/${groupId}/expenses`, {
       method: 'POST',
       body: JSON.stringify(expenseData)
+    })
+  }
+
+  async deleteGroup(groupId) {
+    return this.request(`/api/groups/${groupId}`, {
+      method: 'DELETE'
+    })
+  }
+
+  async deleteExpense(expenseId) {
+    return this.request(`/api/expenses/${expenseId}`, {
+      method: 'DELETE'
     })
   }
 
